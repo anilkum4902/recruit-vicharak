@@ -32,7 +32,7 @@ reg [5:0] immed;
 reg [5:0] LWD;
 reg [4:0] Dst;
 integer i;
-parameter Add=4'b0001 , 
+parameter Add=4'b0001 ,Not=4'b0000, 
 sub=4'b0010 , mul=4'b0011 , div=4'b0100 ,inc=4'b0101 ,
 dec=4'b0110,And=4'b0111,Or=4'b1000,Nand=4'b1001,Nor=4'b1010,
 Xor=4'b1011,Xnor=4'b1100,jmp=4'b1101,Beql=4'b1110,Bnql=4'b1111,Lw=5'b10000,sw=5'b10001;
@@ -171,6 +171,14 @@ case(op_code)
        jmp: begin
        pc=instrn_reg[14:0];
        end
+       Not: begin
+        Dst=instrn_reg[14:11];
+        A=instrn_reg[10:7];
+        B=instrn_reg[6:3];
+        ALU_OUT=r[A]+r[B];
+        pc=pc+1;
+        r[Dst]=~(ALU_OUT);
+        end
        endcase
        end
        
